@@ -4,26 +4,20 @@ const TaskContext = createContext();
 
 export function TaskProvider({ children }) {
   const [tasks, setTasks] = useState(() => {
-    const savedTasks = localStorage.getItem("focusflow_tasks");
+    const savedTasks = localStorage.getItem("tasks");
+
     return savedTasks ? JSON.parse(savedTasks) : [];
   });
 
   useEffect(() => {
-    localStorage.setItem("focusflow_tasks", JSON.stringify(tasks));
+    localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
   return (
-    <TaskContext.Provider
-      value={{
-        tasks,
-        setTasks,
-      }}
-    >
+    <TaskContext.Provider value={{ tasks, setTasks }}>
       {children}
     </TaskContext.Provider>
   );
 }
 
-export function useTasks() {
-  return useContext(TaskContext);
-}
+export const useTasks = () => useContext(TaskContext);
